@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.Properties;
 
+import static java.lang.String.format;
+
 public class Configuration {
 
     private static final Logger LOG = LoggerFactory.getLogger(Configuration.class);
@@ -34,9 +36,9 @@ public class Configuration {
         this.properties = new Properties();
         loadResourceAndFile(properties, BASE_FILENAME);
 
-        var env = System.getProperty("commons.environment");
+        var env = System.getProperty(COMMONS_ENVIRONMENT);
         env = env == null ? properties.getProperty(COMMONS_ENVIRONMENT) : env;
-        var envFilename = env != null ? String.format("%s_%S", env, BASE_FILENAME) : null;
+        var envFilename = env != null ? format("%s_%s", env, BASE_FILENAME) : null;
         if (envFilename != null) loadResourceAndFile(properties, envFilename);
     }
 
@@ -149,7 +151,7 @@ public class Configuration {
     }
 
     private static void loadResourceAndFile(Properties properties, String filename) {
-        var resource = Configuration.class.getResourceAsStream(filename);
+        var resource = Configuration.class.getResourceAsStream(format("/%s",filename));
         if (resource != null) {
             try {
                 properties.load(resource);
