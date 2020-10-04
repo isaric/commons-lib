@@ -17,14 +17,24 @@ dependencies {
 }
 
 publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = group
+            artifactId = project.name
+            version = version
+
+            from components.java
+        }
+    }
     repositories {
         maven {
             name = "GitHubPackages"
-            url = "https://maven.pkg.github.com/isaric/commons-libs"
+            url = "https://maven.pkg.github.com/isaric/commons-lib"
             credentials {
                 username = "isaric"
                 password = property("github.token")
             }
         }
     }
+
 }

@@ -35,7 +35,7 @@ public class Configuration {
 
         var env = System.getProperty("commons.environment");
         env = env == null ? properties.getProperty(COMMONS_ENVIRONMENT) : env;
-        var envFilename = env != null ? "%s_%S".formatted(env, BASE_FILENAME) : null;
+        var envFilename = env != null ? String.format("%s_%S", env, BASE_FILENAME) : null;
         if (envFilename != null) loadResourceAndFile(properties, envFilename);
 
     }
