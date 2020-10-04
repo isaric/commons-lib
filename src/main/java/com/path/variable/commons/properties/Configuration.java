@@ -8,7 +8,12 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.MessageFormat;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 import java.util.Properties;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static java.lang.String.format;
 
@@ -149,6 +154,47 @@ public class Configuration {
         }
         return Long.valueOf(stringValue);
     }
+
+    public List<String> getStringList(String key) {
+        return Optional.ofNullable(getString(key))
+                       .map(s -> s.split(","))
+                       .stream()
+                       .flatMap(Arrays::stream)
+                       .map(String::trim)
+                       .collect(Collectors.toList());
+    }
+
+    public List<Integer> getIntegerList(String key) {
+        return Optional.ofNullable(getString(key))
+                       .map(s -> s.split(","))
+                       .stream()
+                       .flatMap(Arrays::stream)
+                       .map(String::trim)
+                       .map(Integer::valueOf)
+                       .collect(Collectors.toList());
+    }
+
+    public List<Double> getDoubleList(String key) {
+        return Optional.ofNullable(getString(key))
+                       .map(s -> s.split(","))
+                       .stream()
+                       .flatMap(Arrays::stream)
+                       .map(String::trim)
+                       .map(Double::valueOf)
+                       .collect(Collectors.toList());
+    }
+
+    public List<Boolean> getBooleanList(String key) {
+        return Optional.ofNullable(getString(key))
+                       .map(s -> s.split(","))
+                       .stream()
+                       .flatMap(Arrays::stream)
+                       .map(String::trim)
+                       .map(Boolean::parseBoolean)
+                       .collect(Collectors.toList());
+    }
+
+
 
     private static void loadResourceAndFile(Properties properties, String filename) {
         var resource = Configuration.class.getResourceAsStream(format("/%s",filename));
