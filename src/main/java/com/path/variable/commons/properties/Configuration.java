@@ -128,6 +128,26 @@ public class Configuration {
         return Boolean.parseBoolean(stringValue);
     }
 
+    public Long getLong(String key) {
+        return Long.valueOf(getString(key));
+    }
+
+    public Long getLong(String key, Long defaultValue) {
+        var stringValue = getString(key);
+        if (stringValue == null) {
+            return defaultValue;
+        }
+        return Long.valueOf(stringValue);
+    }
+
+    public Long getLong(String key, Long defaultValue, Object... args) {
+        var stringValue = getString(new MessageFormat(key).format(args));
+        if (stringValue == null) {
+            return defaultValue;
+        }
+        return Long.valueOf(stringValue);
+    }
+
     private static void loadResourceAndFile(Properties properties, String filename) {
         var resource = Configuration.class.getResourceAsStream(filename);
         if (resource != null) {
