@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.Properties;
 
 public class Configuration {
@@ -37,7 +38,6 @@ public class Configuration {
         env = env == null ? properties.getProperty(COMMONS_ENVIRONMENT) : env;
         var envFilename = env != null ? String.format("%s_%S", env, BASE_FILENAME) : null;
         if (envFilename != null) loadResourceAndFile(properties, envFilename);
-
     }
 
     public String getString(String key) {
@@ -48,6 +48,15 @@ public class Configuration {
         return properties.getProperty(key, defaultValue);
     }
 
+    public String getString(String key, Object... args) {
+        return properties.getProperty(new MessageFormat(key).format(args));
+    }
+
+    public String getString(String key, String defaultValue, Object... args) {
+        var result = properties.getProperty(new MessageFormat(key).format(args));
+        return result == null ? defaultValue : result;
+    }
+
     public Integer getInteger(String key) {
         var stringValue = getString(key);
         return Integer.valueOf(stringValue);
@@ -55,6 +64,14 @@ public class Configuration {
 
     public Integer getInteger(String key, Integer defaultValue) {
         var stringValue = getString(key);
+        if (stringValue == null) {
+            return defaultValue;
+        }
+        return Integer.valueOf(stringValue);
+    }
+
+    public Integer getInteger(String key, Integer defaultValue, Object... args) {
+        var stringValue = getString(new MessageFormat(key).format(args));
         if (stringValue == null) {
             return defaultValue;
         }
@@ -72,6 +89,43 @@ public class Configuration {
             return defaultValue;
         }
         return Double.valueOf(stringValue);
+    }
+
+    public Double getDouble(String key, Object args) {
+        var stringValue = getString(new MessageFormat(key).format(args));
+        return Double.valueOf(stringValue);
+    }
+
+    public Double getDouble(String key, Double defaultValue, Object args) {
+        var stringValue = getString(new MessageFormat(key).format(args));
+        if (stringValue == null) {
+            return defaultValue;
+        }
+        return Double.valueOf(stringValue);
+    }
+
+    public Boolean getBoolean(String key) {
+        return Boolean.parseBoolean(getString(key));
+    }
+
+    public Boolean getBoolean(String key, Boolean defaultValue) {
+        var stringValue = getString(key);
+        if (stringValue == null) {
+            return defaultValue;
+        }
+        return Boolean.parseBoolean(stringValue);
+    }
+
+    public Boolean getBoolean(String key, Object... args) {
+        return Boolean.parseBoolean(getString(new MessageFormat(key).format(args)));
+    }
+
+    public Boolean getBoolean(String key, Boolean defaultValue, Object... args) {
+        var stringValue = getString(new MessageFormat(key).format(args));
+        if (stringValue == null) {
+            return defaultValue;
+        }
+        return Boolean.parseBoolean(stringValue);
     }
 
     private static void loadResourceAndFile(Properties properties, String filename) {
