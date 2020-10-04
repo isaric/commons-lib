@@ -44,7 +44,7 @@ public class ConfigurationTest {
     @Test
     public void testDoubleList() {
         var list = getConfiguration().getDoubleList("d.list");
-        
+
         assertEquals(2, list.size());
         assertTrue(list.contains(1.5));
         assertTrue(list.contains(25.6));
