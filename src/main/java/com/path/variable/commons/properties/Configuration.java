@@ -12,10 +12,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.lang.String.format;
+import static java.util.function.Function.identity;
 
 public class Configuration {
 
@@ -156,41 +158,28 @@ public class Configuration {
     }
 
     public List<String> getStringList(String key) {
-        return Optional.ofNullable(getString(key))
-                       .map(s -> s.split(","))
-                       .stream()
-                       .flatMap(Arrays::stream)
-                       .map(String::trim)
-                       .collect(Collectors.toList());
+        return getListForKeyAndParser(key, identity());
     }
 
     public List<Integer> getIntegerList(String key) {
-        return Optional.ofNullable(getString(key))
-                       .map(s -> s.split(","))
-                       .stream()
-                       .flatMap(Arrays::stream)
-                       .map(String::trim)
-                       .map(Integer::valueOf)
-                       .collect(Collectors.toList());
+        return getListForKeyAndParser(key, Integer::valueOf);
     }
 
     public List<Double> getDoubleList(String key) {
-        return Optional.ofNullable(getString(key))
-                       .map(s -> s.split(","))
-                       .stream()
-                       .flatMap(Arrays::stream)
-                       .map(String::trim)
-                       .map(Double::valueOf)
-                       .collect(Collectors.toList());
+        return getListForKeyAndParser(key, Double::valueOf);
     }
 
     public List<Boolean> getBooleanList(String key) {
+        return getListForKeyAndParser(key, Boolean::parseBoolean);
+    }
+
+    private <T> List<T>  getListForKeyAndParser(String key, Function<String, T> parser) {
         return Optional.ofNullable(getString(key))
                        .map(s -> s.split(","))
-                       .stream()
-                       .flatMap(Arrays::stream)
+                       .map(Arrays::stream)
+                       .orElseGet(Stream::empty)
                        .map(String::trim)
-                       .map(Boolean::parseBoolean)
+                       .map(parser)
                        .collect(Collectors.toList());
     }
 

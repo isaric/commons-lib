@@ -49,4 +49,15 @@ public class ConfigurationTest {
         assertTrue(list.contains(1.5));
         assertTrue(list.contains(25.6));
     }
+
+    @Test
+    public void testBooleanList() {
+        var list = getConfiguration().getBooleanList("b.list");
+
+        assertEquals(4, list.size());
+        assertTrue(list.contains(true));
+        assertTrue(list.contains(false));
+        assertTrue(list.contains(false));
+        assertTrue(list.contains(true));
+    }
 }
