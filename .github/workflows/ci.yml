@@ -1,4 +1,6 @@
 name: Java CI with Gradle
+env:
+  gitub.token: ${{ secrets.GITHUB_TOKEN }}
 
 on:
   push:
