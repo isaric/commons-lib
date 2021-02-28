@@ -36,6 +36,20 @@ public class LogLevelServiceTest {
     }
 
     @Test
+    public void willGetLogLevel() {
+        Level level = logLevelService.getLogLevel(LogLevelServiceTest.class.getName());
+
+        assertEquals(Level.INFO, level);
+    }
+
+    @Test
+    public void willGetDefaultLogLevelForNonExistantLogger() {
+        Level level = logLevelService.getLogLevel("FlyingSaucer");
+
+        assertEquals(Level.ERROR, level);
+    }
+
+    @Test
     public void willRevertTimedRequest() throws InterruptedException {
         LoggerChangeRequest request = new LoggerChangeRequest(LogLevelServiceTest.class.getName(), "TRACE", Duration.ofMillis(3000));
 
