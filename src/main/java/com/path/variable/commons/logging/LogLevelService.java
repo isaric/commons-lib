@@ -33,6 +33,10 @@ public class LogLevelService {
                 execute(request) : executeWithTimer(request);
     }
 
+    public Level getLogLevel(String loggerName) {
+        return loggerContext.getLogger(loggerName).getEffectiveLevel();
+    }
+
     private boolean invalidRequest(LoggerChangeRequest request) {
         return request.getLoggerName() == null || request.getLevel() == null;
     }
