@@ -2,10 +2,10 @@ package com.path.variable.commons.slack;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.path.variable.commons.slack.exceptions.MessagingException;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 
 import java.io.IOException;
 import java.net.URI;
@@ -19,12 +19,12 @@ public class SlackHook {
 
 	private final String url;
 
-	private final HttpClient client;
+	private final CloseableHttpClient client;
 
 	public SlackHook(String url) {
 		this.url = url;
 		this.mapper = new ObjectMapper();
-		this.client = HttpClientBuilder.create().build();
+		this.client = HttpClients.createDefault();
 	}
 
 	public void sendPlainText(String text) {
@@ -43,7 +43,8 @@ public class SlackHook {
 			var entity = new StringEntity(mapper.writeValueAsString(payload));
 			post.setEntity(entity);
 			post.setHeader("content-type", "application/json");
-			client.execute(post);
+			var response = client.execute(post);
+			response.close();
 		} catch (URISyntaxException | IOException ex) {
 			throw new MessagingException("Slack message could not be sent", ex);
 		}
