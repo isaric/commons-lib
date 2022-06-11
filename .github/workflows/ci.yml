@@ -1,7 +1,9 @@
 name: Java CI with Gradle
 env:
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
+  PV_GPG_KEY: ${{ secrets.PV_GPG_KEY }}
+  PV_GPG_PWD: ${{ secrets.PV_GPG_PWD }}
+  MC_USER: $${{ secrets.MC_USER }}
+  MC_PWD: $${{ secrets.MC_PWD }}
 on:
   push:
     branches: [ main ]
@@ -22,6 +24,6 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Build with Gradle
-      run: ./gradlew -Pgithub.token=$GITHUB_TOKEN build
+      run: ./gradlew -Ppv.gpg.password=$PV_GPG_PWD -Pmc.user=$MC_USER -Pmc.pass=$MC_PWD build
     - name: Test with Gradle
-      run: ./gradlew -Pgithub.token=$GITHUB_TOKEN test
+      run: ./gradlew -Ppv.gpg.password=$PV_GPG_PWD -Pmc.user=$MC_USER -Pmc.pass=$MC_PWD  test
