@@ -49,6 +49,5 @@ publishing {
 
 signing {
     useInMemoryPgpKeys(findProperty("pv.gpg.key"), findProperty("pv.key.pwd"))
-    useGpgCmd()
     sign publishing.publications.maven
 }
