@@ -24,6 +24,6 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Build with Gradle
-      run: ./gradlew -Ppv.gpg.key=$PV_GPG_KEY -Ppv.gpg.password=$PV_GPG_PWD -Pmc.user=$MC_USER -Pmc.pass=$MC_PWD build
+      run: ./gradlew -Ppv.gpg.password=$PV_GPG_PWD -Pmc.user=$MC_USER -Pmc.pass=$MC_PWD build
     - name: Test with Gradle
-      run: ./gradlew -Ppv.gpg.key=$PV_GPG_KEY -Ppv.gpg.password=$PV_GPG_PWD -Pmc.user=$MC_USER -Pmc.pass=$MC_PWD  test
+      run: ./gradlew -Ppv.gpg.password=$PV_GPG_PWD -Pmc.user=$MC_USER -Pmc.pass=$MC_PWD  test

@@ -48,6 +48,6 @@ publishing {
 }
 
 signing {
-    useInMemoryPgpKeys(findProperty("pv.gpg.key"), findProperty("pv.key.pwd"))
+    useInMemoryPgpKeys(findProperty("PV_GPG_KEY"), findProperty("pv.key.pwd"))
     sign publishing.publications.maven
 }
