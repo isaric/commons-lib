@@ -20,4 +20,4 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: Publish with Gradle to Maven Central
-        run: ./gradlew -Ppv.gpg.key=$PV_GPG_KEY -Ppv.gpg.password=$PV_GPG_PWD -Pmc.user=$MC_USER -Pmc.pass=$MC_PWD
+        run: ./gradlew -Ppv.gpg.password=$PV_GPG_PWD -Pmc.user=$MC_USER -Pmc.pass=$MC_PWD
