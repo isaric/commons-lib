@@ -1,12 +1,12 @@
-name: Publish on release
+name: Publish on manual trigger
 env:
   PV_GPG_KEY: ${{ secrets.PV_GPG_KEY }}
   PV_GPG_PWD: ${{ secrets.PV_GPG_PWD }}
   MC_USER: $${{ secrets.MC_USER }}
   MC_PWD: $${{ secrets.MC_PWD }}
 on:
-  release:
-    types: [published]
+    workflow_dispatch:
+
 jobs:
   publish:
     runs-on: ubuntu-latest
