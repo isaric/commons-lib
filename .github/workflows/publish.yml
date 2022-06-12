@@ -1,9 +1,10 @@
 name: Publish on release
 env:
   PV_GPG_KEY: ${{ secrets.PV_GPG_KEY }}
-  PV_GPG_PWD: ${{ secrets.PV_GPG_PWD }}
-  MC_USER: $${{ secrets.MC_USER }}
-  MC_PWD: $${{ secrets.MC_PWD }}
+  PV_GPG_PWD: ${{ secrets.PV_GPG_KEY_PWD }}
+  PV_GPG_ID: ${{ secrets.PV_GPG_KEY_ID }}
+  MC_USER: ${{ secrets.MC_USER }}
+  MC_PWD: ${{ secrets.MC_PWD }}
 on:
   release:
     types: [published]
@@ -17,7 +18,10 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 15
+      - name: import gpg key
+        run:
+            "echo \"$PV_GPG_KEY\" > my.key\n gpg --import --no-tty --yes --pinentry-mode loopback --passphrase \"$PV_GPG_PWD\" my.key"
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: Publish with Gradle to Maven Central
-        run: ./gradlew -Ppv.gpg.password=$PV_GPG_PWD -Pmc.user=$MC_USER -Pmc.pass=$MC_PWD
+        run: ./gradlew -Psigning.gnupg.keyName="$PV_GPG_ID" -Psigning.gnupg.passphrase="$PV_GPG_PWD" -Pmc.user="$MC_USER" -Pmc.pass="$MC_PWD" publish --stacktrace

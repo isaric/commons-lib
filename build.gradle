@@ -45,9 +45,9 @@ publishing {
             }
         }
     }
-}
 
-signing {
-    useInMemoryPgpKeys(findProperty("PV_GPG_KEY"), findProperty("pv.key.pwd"))
-    sign publishing.publications.maven
+    signing {
+        useGpgCmd()
+        sign publishing.publications.maven
+    }
 }
