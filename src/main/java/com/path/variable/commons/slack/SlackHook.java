@@ -13,6 +13,9 @@ import java.net.URISyntaxException;
 
 import static java.util.Collections.singletonMap;
 
+/**
+ * A basic abstraction of the Slack webhook API.
+ */
 public class SlackHook {
 	
 	private final ObjectMapper mapper;

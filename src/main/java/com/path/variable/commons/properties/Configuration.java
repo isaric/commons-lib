@@ -19,6 +19,28 @@ import java.util.stream.Stream;
 import static java.lang.String.format;
 import static java.util.function.Function.identity;
 
+/**
+ * The main class for the configuration component. The component is initialized statically and concurrency concerns
+ * are handled by propagating to dependent components from a constants class (ex. ApplicationConstants.java) that is
+ * initialized at application startup.
+ * Supports loading properties with wrappers for Java primitive types Integer, Double, Boolean and String.
+ * Also includes a convenience method for getting a comma-separated list from a property entry.
+ * Supports environment specific property files based on a prefix. The environment prefix can be passed as a
+ * JVM argument on application startup.
+ * The base filename for the properties file is "app.properties".
+ * An example file for a hypothetical "dev" environment would be:
+ * "dev_app.properties".
+ * The order of the property file loading is defined as follows:
+ *  1) Inside the same folder as the deployed JAR file:
+ *    a) Environment specific file
+ *    b) Generic file
+ *    c) System properties
+ *  2) Inside the JAR file itself:
+ *    a) Environment specific file
+ *    b) Generic file
+ * Also provides helper methods that allow for specifying a default value when getting the property.
+ * Uses MessageFormat to allow for interpolation of arguments within the property key.
+ */
 public class Configuration {
 
     private static final Logger LOG = LoggerFactory.getLogger(Configuration.class);

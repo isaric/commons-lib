@@ -14,6 +14,12 @@ import java.util.TimerTask;
 
 import static com.path.variable.commons.logging.dto.LogResponseStatus.*;
 
+/**
+ * This component provides an interface to access and manage an applications Loggers at runtime.
+ * Also allows the client to specify a duration after which the altered log level reverts to the
+ * original level.
+ * The reasoning behind the component is simply convenience. It might get phased out in future releases.
+ */
 public class LogLevelService {
 
     private static final Logger LOG = (Logger) LoggerFactory.getLogger(LogLevelService.class);
